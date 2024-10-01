@@ -102,9 +102,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioEntity> delete(long id) {
-        Optional<UsuarioEntity> usuarioDelete = repository.findById(id);
         repository.deleteById(id);
-        tokenService.deleteByUsuario(usuarioDelete.get());
         return repository.findAll();
     }
 

@@ -23,7 +23,7 @@ public class TokenEntity {
     @Column(name = "token", nullable = false)
     private String token;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_usuario")
     @JsonBackReference
     private UsuarioEntity usuario;

@@ -56,7 +56,7 @@ public class TokenService {
             throw new Exception("Token não localizado");
         }
 
-        Optional<UsuarioEntity> usuario = usuarioRepository.findById(tokenEntity.get().getId());
+        Optional<UsuarioEntity> usuario = usuarioRepository.findById(tokenEntity.get().getUsuario().getId());
 
         if (!usuario.isPresent()) {
             throw new Exception("Usuário não localizado!");

@@ -2,7 +2,6 @@ package com.spring.spring.usuario.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,75 +31,49 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioEntity>> consultarTodos(@RequestHeader("Authorization") String auth) {
-        try {
-            tokenService.validarToken(auth);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ResponseEntity<List<UsuarioEntity>> consultarTodos(@RequestHeader("Authorization") String auth)
+            throws Exception {
 
+        tokenService.validarToken(auth);
         List<UsuarioEntity> usuarios = service.consultarTodos();
         return ResponseEntity.ok().body(usuarios);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
-        try {
-            UsuarioEntity usuarioLogado = service.login(loginDTO);
-            return ResponseEntity.ok().body(usuarioLogado);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    public ResponseEntity<UsuarioEntity> login(@RequestBody LoginDTO loginDTO) throws Exception {
+        UsuarioEntity usuarioLogado = service.login(loginDTO);
+        return ResponseEntity.ok().body(usuarioLogado);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestHeader("Authorization") String auth, @RequestBody UsuarioDTO usuario) {
-        try {
-            tokenService.validarToken(auth);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ResponseEntity<List<UsuarioEntity>> create(@RequestHeader("Authorization") String auth,
+            @RequestBody UsuarioDTO usuario)
+            throws Exception {
 
+        tokenService.validarToken(auth);
         List<UsuarioEntity> usuarios = null;
+        usuarios = service.create(usuario);
+        return ResponseEntity.ok().body(usuarios);
 
-        try {
-            usuarios = service.create(usuario);
-            return ResponseEntity.ok().body(usuarios);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> update(@RequestHeader("Authorization") String auth, @RequestBody UsuarioDTO usuario) {
-        try {
-            tokenService.validarToken(auth);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ResponseEntity<List<UsuarioEntity>> update(@RequestHeader("Authorization") String auth,
+            @RequestBody UsuarioDTO usuario)
+            throws Exception {
 
-        List<UsuarioEntity> usuarios = null;
+        tokenService.validarToken(auth);
+        List<UsuarioEntity>usuarios = service.update(usuario);
+        return ResponseEntity.ok().body(usuarios);
 
-        try {
-            usuarios = service.update(usuario);
-            return ResponseEntity.ok().body(usuarios);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
     }
 
     @PostMapping("/delete/{id}")
     public ResponseEntity<List<UsuarioEntity>> delete(@RequestHeader("Authorization") String auth,
-            @PathVariable long id) {
-        try {
-            tokenService.validarToken(auth);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
+            @PathVariable long id) throws Exception {
+
+        tokenService.validarToken(auth);
+
         List<UsuarioEntity> usuarios = service.delete(id);
         return ResponseEntity.ok().body(usuarios);
     }
