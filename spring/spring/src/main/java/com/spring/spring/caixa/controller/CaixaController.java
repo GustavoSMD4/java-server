@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.spring.caixa.entity.CaixaEntity;
 import com.spring.spring.caixa.service.CaixaService;
+import com.spring.spring.dto.caixa.CaixaDTO;
 import com.spring.spring.token.service.TokenService;
 
 @RestController
@@ -37,10 +38,10 @@ public class CaixaController {
 
     @PostMapping("/create")
     public ResponseEntity<List<CaixaEntity>> create(@RequestHeader("Authorization") String auth,
-            @RequestBody CaixaEntity caixaEntity)
+            @RequestBody CaixaDTO caixaDTO)
             throws Exception {
         tokenService.validarToken(auth);
-        List<CaixaEntity> caixas = caixaService.create(caixaEntity);
+        List<CaixaEntity> caixas = caixaService.create(caixaDTO);
         return ResponseEntity.ok().body(caixas);
     }
 
@@ -49,7 +50,7 @@ public class CaixaController {
             @RequestBody CaixaEntity caixaEntity)
             throws Exception {
         tokenService.validarToken(auth);
-        List<CaixaEntity> caixas = caixaService.update(caixaEntity);
+        List<CaixaEntity> caixas = caixaService.salvar(caixaEntity);
         return ResponseEntity.ok().body(caixas);
     }
 

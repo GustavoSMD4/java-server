@@ -1,47 +1,29 @@
 package com.spring.spring.caixa.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.spring.spring.abstracts.ServiceAbstract;
 import com.spring.spring.caixa.entity.CaixaEntity;
 import com.spring.spring.caixa.repository.CaixaRepository;
+import com.spring.spring.dto.caixa.CaixaDTO;
 
 @Service
-public class CaixaService {
+public class CaixaService extends ServiceAbstract<CaixaEntity, Long> {
     private CaixaRepository caixaRepository;
 
     public CaixaService(CaixaRepository caixaRepository) {
         this.caixaRepository = caixaRepository;
     }
 
-    public List<CaixaEntity> consultarTodos() {
-        return caixaRepository.findAll();
-    }
+    public List<CaixaEntity> create(CaixaDTO caixaDTO) {
+        CaixaEntity caixaEntity = new CaixaEntity();
 
-    public CaixaEntity consultarPorId(long id) throws Exception {
-        Optional<CaixaEntity> caixa = caixaRepository.findById(id);
+        caixaEntity.setCaixa(caixaDTO.getCaixa());
+        caixaEntity.setSaldo(caixaDTO.getSaldo());
 
-        if (!caixa.isPresent()) {
-            throw new Exception("Caixa não localizado!");
-        }
-
-        return caixa.get();
-    }
-
-    public List<CaixaEntity> create(CaixaEntity caixaEntity) {
         caixaRepository.save(caixaEntity);
-        return caixaRepository.findAll();
-    }
-
-    public List<CaixaEntity> update(CaixaEntity caixaEntity) {
-        caixaRepository.save(caixaEntity);
-        return caixaRepository.findAll();
-    }
-
-    public List<CaixaEntity> delete(long id) {
-        caixaRepository.deleteById(id);
         return caixaRepository.findAll();
     }
 

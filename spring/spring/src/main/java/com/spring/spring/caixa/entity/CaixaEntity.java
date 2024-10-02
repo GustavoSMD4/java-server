@@ -19,8 +19,8 @@ public class CaixaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "nome_caixa", nullable = false, length = 60, unique = true)
-    private String nomeCaixa;
+    @Column(name = "caixa", nullable = false, length = 60, unique = true)
+    private String caixa;
     @Column(name = "saldo", nullable = false)
     private float saldo;
 
@@ -36,12 +36,12 @@ public class CaixaEntity {
         this.id = id;
     }
 
-    public String getNomeCaixa() {
-        return nomeCaixa;
+    public String getCaixa() {
+        return caixa;
     }
 
-    public void setNomeCaixa(String nomeCaixa) {
-        this.nomeCaixa = nomeCaixa;
+    public void setCaixa(String caixa) {
+        this.caixa = caixa;
     }
 
     public float getSaldo() {
@@ -50,6 +50,14 @@ public class CaixaEntity {
 
     public void setSaldo(float saldo) {
         this.saldo = saldo;
+    }
+
+    public List<CaixaMovEntity> getMovimentacoes() {
+        return movimentacoes;
+    }
+
+    public void setMovimentacoes(List<CaixaMovEntity> movimentacoes) {
+        this.movimentacoes = movimentacoes;
     }
 
 }
