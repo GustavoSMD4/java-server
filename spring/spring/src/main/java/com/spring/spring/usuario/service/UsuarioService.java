@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.spring.spring.abstracts.ServiceAbstract;
 import com.spring.spring.dto.LoginDTO;
 import com.spring.spring.dto.UsuarioDTO;
 import com.spring.spring.role.entity.RoleEntity;
@@ -16,23 +17,16 @@ import com.spring.spring.usuario.entity.UsuarioEntity;
 import com.spring.spring.usuario.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService {
+public class UsuarioService extends ServiceAbstract<UsuarioEntity, Long>{
     private UsuarioRepository repository;
     private RoleService roleService;
     private TokenService tokenService;
 
     public UsuarioService(UsuarioRepository repository, RoleService roleService, TokenService tokenService) {
+        super(repository);
         this.repository = repository;
         this.roleService = roleService;
         this.tokenService = tokenService;
-    }
-
-    public List<UsuarioEntity> consultarTodos() {
-        return repository.findAll();
-    }
-
-    public Optional<UsuarioEntity> consultarPorId(long id) {
-        return repository.findById(id);
     }
 
     public UsuarioEntity login(LoginDTO loginDTO) throws Exception{
@@ -100,10 +94,5 @@ public class UsuarioService {
         repository.save(usuarioEntity);
         return repository.findAll();
     }
-
-    public List<UsuarioEntity> delete(long id) {
-        repository.deleteById(id);
-        return repository.findAll();
-    }
-
+    
 }

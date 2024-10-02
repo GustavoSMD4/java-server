@@ -11,9 +11,11 @@ import com.spring.spring.dto.caixa.CaixaDTO;
 
 @Service
 public class CaixaService extends ServiceAbstract<CaixaEntity, Long> {
+    private CaixaRepository repository;
 
     public CaixaService(CaixaRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     public List<CaixaEntity> create(CaixaDTO caixaDTO) {

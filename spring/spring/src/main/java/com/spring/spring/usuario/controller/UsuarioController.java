@@ -39,6 +39,11 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarios);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioEntity> consultarPorId(@RequestHeader("Authorization") String auth, @PathVariable long id) throws Exception{
+        return ResponseEntity.ok().body(service.consultarPorId(id));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<UsuarioEntity> login(@RequestBody LoginDTO loginDTO) throws Exception {
         UsuarioEntity usuarioLogado = service.login(loginDTO);
