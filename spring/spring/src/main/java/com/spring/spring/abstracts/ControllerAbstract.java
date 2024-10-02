@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public abstract class ControllerAbstract<Entidade, ID> {
 
-    protected abstract ServiceAbstract<Entidade, ID> getService();
+    private ServiceAbstract<Entidade, ID> service;
 
     @GetMapping
     public ResponseEntity<List<Entidade>> consultarTodos() {
-        return ResponseEntity.ok().body(getService().consultarTodos());
+        return ResponseEntity.ok().body(service.consultarTodos());
     }
 
     @PostMapping("/create")
     public ResponseEntity<List<Entidade>> create(@RequestBody Entidade entidade) {
-        getService().salvar(entidade);
-        return ResponseEntity.ok().body(getService().consultarTodos());
+        service.salvar(entidade);
+        return ResponseEntity.ok().body(service.consultarTodos());
     }
 }

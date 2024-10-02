@@ -8,6 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public abstract class ServiceAbstract<Entidade, ID> {
     protected JpaRepository<Entidade, ID> repository;
 
+    public ServiceAbstract(JpaRepository<Entidade, ID> repository){
+        this.repository = repository;
+    }
+
     public List<Entidade> consultarTodos() {
         return repository.findAll();
     }

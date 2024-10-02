@@ -11,10 +11,9 @@ import com.spring.spring.dto.caixa.CaixaDTO;
 
 @Service
 public class CaixaService extends ServiceAbstract<CaixaEntity, Long> {
-    private CaixaRepository caixaRepository;
 
-    public CaixaService(CaixaRepository caixaRepository) {
-        this.caixaRepository = caixaRepository;
+    public CaixaService(CaixaRepository repository) {
+        super(repository);
     }
 
     public List<CaixaEntity> create(CaixaDTO caixaDTO) {
@@ -23,8 +22,8 @@ public class CaixaService extends ServiceAbstract<CaixaEntity, Long> {
         caixaEntity.setCaixa(caixaDTO.getCaixa());
         caixaEntity.setSaldo(caixaDTO.getSaldo());
 
-        caixaRepository.save(caixaEntity);
-        return caixaRepository.findAll();
+        repository.save(caixaEntity);
+        return repository.findAll();
     }
 
 }
