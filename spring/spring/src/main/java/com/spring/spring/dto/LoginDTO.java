@@ -1,5 +1,7 @@
 package com.spring.spring.dto;
 
+import com.spring.spring.utilidades.Criptografar;
+
 public class LoginDTO {
     private String usuario;
     private String senha;
@@ -20,7 +22,7 @@ public class LoginDTO {
     }
 
     public void setSenha(String senha) {
-        this.senha = new utilidades.Criptografar().criptografarSHA256(senha);
+        this.senha = new Criptografar().criptografarSHA256(senha);
     }
 
 }

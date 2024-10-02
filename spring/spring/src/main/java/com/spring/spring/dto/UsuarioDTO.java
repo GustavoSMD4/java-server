@@ -1,5 +1,7 @@
 package com.spring.spring.dto;
 
+import com.spring.spring.utilidades.Criptografar;
+
 public class UsuarioDTO {
     private long id;
     private String nome;
@@ -39,7 +41,7 @@ public class UsuarioDTO {
     }
 
     public void setSenha(String senha) {
-        this.senha = new utilidades.Criptografar().criptografarSHA256(senha);
+        this.senha = new Criptografar().criptografarSHA256(senha);
     }
 
     public long getIdRole() {
