@@ -22,7 +22,7 @@ public class LoginDTO {
     }
 
     public void setSenha(String senha) {
-        this.senha = new Criptografar().criptografarSHA256(senha);
+        this.senha = Criptografar.criptografarSHA256(senha);
     }
 
 }

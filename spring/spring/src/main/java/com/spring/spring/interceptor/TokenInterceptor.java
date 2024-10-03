@@ -3,7 +3,7 @@ package com.spring.spring.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.spring.spring.token.service.TokenService;
+import com.spring.spring.server.token.service.TokenService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

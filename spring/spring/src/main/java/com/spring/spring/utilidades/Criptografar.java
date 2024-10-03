@@ -9,7 +9,7 @@ public class Criptografar {
 
     }
 
-    public String criptografarSHA256(String input) {
+    public static String criptografarSHA256(String input) {
         try {
             // Cria uma instância do MessageDigest para SHA-256
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

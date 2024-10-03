@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import com.spring.spring.token.service.TokenService;
+import com.spring.spring.server.token.service.TokenService;
 
 public abstract class ControllerAbstract<Entidade, ID> {
 
