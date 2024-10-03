@@ -3,14 +3,13 @@ package com.spring.spring.abstracts;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class ServiceAbstract<Entidade, ID> {
-    private JpaRepository<Entidade, ID> repository;
-
-    public ServiceAbstract(JpaRepository<Entidade, ID> repository){
-        this.repository = repository;
-    }
+public abstract class ServiceAbstract<Entidade, ID, Repository extends JpaRepository<Entidade, ID>> {
+    
+    @Autowired
+    protected Repository repository;
 
     public List<Entidade> consultarTodos() {
         return repository.findAll();

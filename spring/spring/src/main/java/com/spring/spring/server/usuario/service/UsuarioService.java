@@ -17,26 +17,23 @@ import com.spring.spring.server.usuario.entity.UsuarioEntity;
 import com.spring.spring.server.usuario.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService extends ServiceAbstract<UsuarioEntity, Long>{
-    private UsuarioRepository repository;
+public class UsuarioService extends ServiceAbstract<UsuarioEntity, Long, UsuarioRepository> {
     private RoleService roleService;
     private TokenService tokenService;
 
-    public UsuarioService(UsuarioRepository repository, RoleService roleService, TokenService tokenService) {
-        super(repository);
-        this.repository = repository;
+    public UsuarioService(RoleService roleService, TokenService tokenService) {
         this.roleService = roleService;
         this.tokenService = tokenService;
     }
 
-    public UsuarioEntity login(LoginDTO loginDTO) throws Exception{
+    public UsuarioEntity login(LoginDTO loginDTO) throws Exception {
         Optional<UsuarioEntity> usuarioEntity = repository.findByUsuario(loginDTO.getUsuario());
 
-        if (!usuarioEntity.isPresent()){
+        if (!usuarioEntity.isPresent()) {
             throw new Exception("Usuário não localizado!");
         }
 
-        if(!usuarioEntity.get().getSenha().equals(loginDTO.getSenha())){
+        if (!usuarioEntity.get().getSenha().equals(loginDTO.getSenha())) {
             throw new Exception("Senha incorreta!");
         }
 
@@ -62,7 +59,7 @@ public class UsuarioService extends ServiceAbstract<UsuarioEntity, Long>{
         UsuarioEntity usuarioSalvo = repository.save(usuarioEntity);
 
         usuarioEntity.setId(usuarioSalvo.getId());
-        
+
         tokenEntity.setUsuario(usuarioEntity);
         tokenEntity.setToken(UUID.randomUUID().toString());
         TokenEntity tokenCriado = tokenService.create(tokenEntity);
@@ -94,5 +91,5 @@ public class UsuarioService extends ServiceAbstract<UsuarioEntity, Long>{
         repository.save(usuarioEntity);
         return repository.findAll();
     }
-    
+
 }

@@ -11,15 +11,11 @@ import com.spring.spring.server.caixa.entity.CaixaTipoMovEntity;
 import com.spring.spring.server.caixa.repository.CaixaMovRepository;
 
 @Service
-public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long> {
-    private CaixaMovRepository repository;
+public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long, CaixaMovRepository> {
     private CaixaService caixaService;
     private CaixaTipoMovService caixaTipoMovService;
 
-    public CaixaMovService(CaixaMovRepository repository, CaixaService caixaService,
-            CaixaTipoMovService caixaTipoMovService) {
-        super(repository);
-        this.repository = repository;
+    public CaixaMovService(CaixaService caixaService, CaixaTipoMovService caixaTipoMovService) {
         this.caixaService = caixaService;
         this.caixaTipoMovService = caixaTipoMovService;
     }

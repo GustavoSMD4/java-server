@@ -10,13 +10,7 @@ import com.spring.spring.server.caixa.entity.CaixaEntity;
 import com.spring.spring.server.caixa.repository.CaixaRepository;
 
 @Service
-public class CaixaService extends ServiceAbstract<CaixaEntity, Long> {
-    private CaixaRepository repository;
-
-    public CaixaService(CaixaRepository repository) {
-        super(repository);
-        this.repository = repository;
-    }
+public class CaixaService extends ServiceAbstract<CaixaEntity, Long, CaixaRepository> {
 
     public List<CaixaEntity> create(CaixaDTO caixaDTO) {
         CaixaEntity caixaEntity = new CaixaEntity();
