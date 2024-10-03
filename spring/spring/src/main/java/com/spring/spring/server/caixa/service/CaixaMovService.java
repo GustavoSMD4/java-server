@@ -16,14 +16,19 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long> {
     private CaixaService caixaService;
     private CaixaTipoMovService caixaTipoMovService;
 
-    public CaixaMovService(CaixaMovRepository repository, CaixaService caixaService, CaixaTipoMovService caixaTipoMovService) {
+    public CaixaMovService(CaixaMovRepository repository, CaixaService caixaService,
+            CaixaTipoMovService caixaTipoMovService) {
         super(repository);
         this.repository = repository;
         this.caixaService = caixaService;
         this.caixaTipoMovService = caixaTipoMovService;
     }
 
-    public List<CaixaMovEntity> create(CaixaMovDTO caixaMovDTO) throws Exception{
+    public List<CaixaMovEntity> consultarPorIdCaixa(long idCaixa) throws Exception {
+        return repository.findAllByCaixa(caixaService.consultarPorId(idCaixa));
+    }
+
+    public List<CaixaMovEntity> create(CaixaMovDTO caixaMovDTO) throws Exception {
         CaixaMovEntity caixaMovEntity = new CaixaMovEntity();
         CaixaEntity caixaEntity = caixaService.consultarPorId(caixaMovDTO.getIdCaixa());
         CaixaTipoMovEntity caixaTipoMovEntity = caixaTipoMovService.consultarPorId(caixaMovDTO.getIdTipo());
@@ -34,10 +39,10 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long> {
         caixaMovEntity.setValor(caixaMovDTO.getValor());
 
         repository.save(caixaMovEntity);
-        return repository.findAll();
+        return repository.findAllByCaixa(caixaMovEntity.getCaixa());
     }
 
-    public List<CaixaMovEntity> update(CaixaMovDTO caixaMovDTO) throws Exception{
+    public List<CaixaMovEntity> update(CaixaMovDTO caixaMovDTO) throws Exception {
         CaixaMovEntity caixaMovEntity = new CaixaMovEntity();
         CaixaEntity caixaEntity = caixaService.consultarPorId(caixaMovDTO.getIdCaixa());
         CaixaTipoMovEntity caixaTipoMovEntity = caixaTipoMovService.consultarPorId(caixaMovDTO.getIdTipo());
@@ -49,7 +54,7 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long> {
         caixaMovEntity.setValor(caixaMovDTO.getValor());
 
         repository.save(caixaMovEntity);
-        return repository.findAll();
+        return repository.findAllByCaixa(caixaMovEntity.getCaixa());
     }
 
 }
