@@ -36,7 +36,10 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long, Caixa
         caixaMovEntity.setTipo(caixaTipoMovEntity);
         caixaMovEntity.setValor(caixaMovDTO.getValor());
 
+        CaixaEntity caixa = this.updateSaldoCaixa(caixaMovEntity, "create");
+
         repository.save(caixaMovEntity);
+        caixaService.salvar(caixa);
         return repository.findAllByCaixa(caixaMovEntity.getCaixa());
     }
 
@@ -51,34 +54,57 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long, Caixa
         caixaMovEntity.setTipo(caixaTipoMovEntity);
         caixaMovEntity.setValor(caixaMovDTO.getValor());
 
+        CaixaEntity caixa = this.updateSaldoCaixa(caixaMovEntity, "update");
+
         repository.save(caixaMovEntity);
+        caixaService.salvar(caixa);
         return repository.findAllByCaixa(caixaMovEntity.getCaixa());
     }
 
-    public void updateSaldoCaixa(CaixaMovEntity movimentacao) throws Exception{
-
-        Optional<CaixaMovEntity> movimentacaoAntesAtualizar = repository.findById(movimentacao.getId());
-
-        if (!movimentacaoAntesAtualizar.isPresent()){
-            throw new Exception("Movimentação do caixa não localizada!");
-        }
+    public CaixaEntity updateSaldoCaixa(CaixaMovEntity movimentacao, String status) throws Exception {
 
         CaixaEntity caixa = caixaService.consultarPorId(movimentacao.getCaixa().getId());
+        CaixaTipoMovEntity tipoAtualizar = caixaTipoMovService.consultarPorId(movimentacao.getTipo().getId());
+
         float saldoAtual = caixa.getSaldo();
+        float saldoAtualizado = 0;
 
-        if (movimentacao.getId() == 0){
+        if (status == "create") {
+            saldoAtualizado = saldoAtual += movimentacao.getValor();
+            caixa.setSaldo(saldoAtualizado);
+        } else {
+            Optional<CaixaMovEntity> movimentacaoAntesAtualizar = repository.findById(movimentacao.getId());
 
-            float saldoAtualizado = saldoAtual += movimentacao.getValor();
-
-            if (saldoAtualizado < 0){
-                throw new Exception("Falha ao atualizado o saldo: o saldo do caixa não pode ficar negativo!");
+            if (!movimentacaoAntesAtualizar.isPresent()) {
+                throw new Exception("Movimentação do caixa não localizada!");
             }
 
-            caixa.setSaldo(saldoAtualizado);
+            CaixaTipoMovEntity tipoAntesAtualizar = caixaTipoMovService
+                    .consultarPorId(movimentacaoAntesAtualizar.get().getTipo().getId());
 
+            if (tipoAntesAtualizar.isEntrada() != tipoAtualizar.isEntrada()) {
+                throw new Exception("A movimentação não pode ser atualizada de entrada para saída!");
+            }
+
+            if (status == "update") {
+                float diferenca = movimentacaoAntesAtualizar.get().getValor() - movimentacao.getValor();
+                saldoAtualizado = saldoAtual + diferenca;
+            }
+
+            if (status == "delete") {
+                float valorAtualizar = tipoAntesAtualizar.isEntrada() ? (movimentacao.getValor() * -1)
+                        : movimentacao.getValor();
+                saldoAtualizado = saldoAtual + valorAtualizar;
+            }
         }
 
-    }
+        if (saldoAtualizado < 0) {
+            throw new Exception("Falha ao atualizado o saldo: o saldo do caixa não pode ficar negativo!");
+        }
 
+        caixa.setSaldo(saldoAtualizado);
+        return caixa;
+
+    }
 
 }
