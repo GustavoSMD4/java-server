@@ -1,6 +1,8 @@
 package com.spring.spring.server.caixa.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.spring.spring.abstracts.ServiceAbstract;
@@ -52,5 +54,31 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long, Caixa
         repository.save(caixaMovEntity);
         return repository.findAllByCaixa(caixaMovEntity.getCaixa());
     }
+
+    public void updateSaldoCaixa(CaixaMovEntity movimentacao) throws Exception{
+
+        Optional<CaixaMovEntity> movimentacaoAntesAtualizar = repository.findById(movimentacao.getId());
+
+        if (!movimentacaoAntesAtualizar.isPresent()){
+            throw new Exception("Movimentação do caixa não localizada!");
+        }
+
+        CaixaEntity caixa = caixaService.consultarPorId(movimentacao.getCaixa().getId());
+        float saldoAtual = caixa.getSaldo();
+
+        if (movimentacao.getId() == 0){
+
+            float saldoAtualizado = saldoAtual += movimentacao.getValor();
+
+            if (saldoAtualizado < 0){
+                throw new Exception("Falha ao atualizado o saldo: o saldo do caixa não pode ficar negativo!");
+            }
+
+            caixa.setSaldo(saldoAtualizado);
+
+        }
+
+    }
+
 
 }
