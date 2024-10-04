@@ -22,6 +22,8 @@ public class CaixaMovEntity {
     private String descricao;
     @Column(name = "valor", nullable = false)
     private float valor;
+    // @Column(name = "data", nullable = false)
+    // private LocalDate data;
 
     @ManyToOne
     @JoinColumn(name = "id_caixa")
@@ -56,6 +58,14 @@ public class CaixaMovEntity {
     public void setValor(float valor) {
         this.valor = valor;
     }
+
+    // public LocalDate getData() {
+    //     return data;
+    // }
+
+    // public void setData(LocalDate data) {
+    //     this.data = data;
+    // }
 
     public CaixaEntity getCaixa() {
         return caixa;

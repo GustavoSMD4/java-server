@@ -70,8 +70,11 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long, Caixa
         float saldoAtualizado = 0;
 
         if (status == "create") {
-            saldoAtualizado = saldoAtual += movimentacao.getValor();
+            saldoAtualizado = saldoAtual += tipoAtualizar.isEntrada() ? movimentacao.getValor()
+                    : (movimentacao.getValor() * -1);
+                    
             caixa.setSaldo(saldoAtualizado);
+
         } else {
             Optional<CaixaMovEntity> movimentacaoAntesAtualizar = repository.findById(movimentacao.getId());
 
@@ -83,7 +86,8 @@ public class CaixaMovService extends ServiceAbstract<CaixaMovEntity, Long, Caixa
                     .consultarPorId(movimentacaoAntesAtualizar.get().getTipo().getId());
 
             if (tipoAntesAtualizar.isEntrada() != tipoAtualizar.isEntrada()) {
-                throw new Exception("A movimentação não pode ser atualizada de entrada para saída!");
+                throw new Exception(
+                        "A movimentação não pode ser atualizada se modificar o tipo para saída ou entrada!");
             }
 
             if (status == "update") {
